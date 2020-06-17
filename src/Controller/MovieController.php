@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Movie;
+use App\Omdb\OmdbApiClient;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,11 +22,13 @@ class MovieController extends AbstractController
     }
 
     /**
-     * @Route("/details/{id}", name="app_movie_show_details", methods={"GET"})
+     * @Route("/details/{title}", name="app_movie_show_details", methods={"GET"})
      */
-    public function showDetails(): Response
+    public function showDetails(OmdbApiClient $apiClient, $title = 'Star wars'): Response
     {
-        // todo $movie = $api->requestByTitle();
+        $movie = $apiClient->requestByTitle($title);
+
+        // todo $movie instanceof Movie === true
 
         return $this->render('movie/show_details.html.twig', [
             'movie' => $movie,
