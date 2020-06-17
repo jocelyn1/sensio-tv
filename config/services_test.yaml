@@ -1,0 +1,8 @@
+services:
+    App\Tests\Omdb\DummyMovieApi: ~
+
+
+    App\Omdb\MovieApiInterface: '@App\Tests\Omdb\DummyMovieApi'
+    # equivalent to:
+#    App\Omdb\MovieApiInterface:
+#        alias: 'App\Tests\Omdb\DummyMovieApi'

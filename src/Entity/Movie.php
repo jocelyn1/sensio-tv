@@ -108,4 +108,23 @@ class Movie
     {
         $this->genres->removeElement($genre);
     }
+
+    public static function createFromApi(array $data): Movie
+    {
+        $movie = new self();
+        $movie->title = $data['Title'];
+        $movie->description = $data['Plot'];
+        $movie->date = \DateTimeImmutable::createFromFormat('Y', $data['Year']);
+
+        foreach (array_map(function ($genre) {
+            return trim($genre);
+        }, explode(',', $data['Genre'])) as $genreName) {
+            $genre = new Genre();
+            $genre->setName($genreName);
+
+            $movie->addGenre($genre);
+        }
+
+        return $movie;
+    }
 }

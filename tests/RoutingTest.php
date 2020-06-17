@@ -13,10 +13,6 @@ class RoutingTest extends WebTestCase
      */
     public function testIndex(string $url, int $statusCode, string $title)
     {
-        if ('/movie/details' === $url) {
-            $this->markTestIncomplete('Create a movie fixture');
-        }
-
         $client = static::createClient();
 
         $client->request(Request::METHOD_GET, $url);
@@ -32,7 +28,7 @@ class RoutingTest extends WebTestCase
         yield 'Route app_main_login' => ['/login', Response::HTTP_OK, 'SensioTV - Log In'];
         yield 'Route app_main_trailer_player' => ['/trailer-player', Response::HTTP_OK, 'SensioTV - Trailer Player'];
         yield 'Route app_movie_list_by_genre' => ['/movie/by-genre', Response::HTTP_OK, 'SensioTV - Movies By Genre'];
-        yield 'Route app_movie_show_details' => ['/movie/details', Response::HTTP_OK, 'SensioTV - Avengers: Endgame Details'];
+        yield 'Route app_movie_show_details' => ['/movie/details', Response::HTTP_OK, 'SensioTV - Dummy movie Details'];
         yield 'Route app_movie_latest' => ['/movie/latest', Response::HTTP_OK, 'SensioTV - Latest Movies'];
         yield 'Route app_movie_player' => ['/movie/player', Response::HTTP_OK, 'SensioTV - Movie Player'];
         yield 'Route app_movie_top_rated' => ['/movie/top-rated', Response::HTTP_OK, 'SensioTV - Top Rated Movies'];
