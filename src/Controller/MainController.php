@@ -2,17 +2,18 @@
 
 namespace App\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class MainController
+class MainController extends AbstractController
 {
     /**
      * @Route("/", name="app_main_index", methods={"GET"})
      */
     public function index(): Response
     {
-        return new Response(file_get_contents(__DIR__.'/../../html/index.html'));
+        return $this->render('@html/index.html');
     }
 
     /**
