@@ -16,4 +16,21 @@ class DummyMovieApi implements MovieApiInterface
 
         return $movie;
     }
+
+    public function search(string $term): array
+    {
+        return [
+            'Search' => [
+                [
+                    "Title" => "Toto the Hero",
+                    "Year" => "1991",
+                    "imdbID" => "tt0103105",
+                    "Type" => "movie",
+                    "Poster" => "https://m.media-amazon.com/images/M/MV5BMjAzMjAyNjE0OV5BMl5BanBnXkFtZTcwOTMyOTI0MQ@@._V1_SX300.jpg",
+                ]
+            ],
+            'totalResults' => 1,
+            'Response' => 'true',
+        ];
+    }
 }

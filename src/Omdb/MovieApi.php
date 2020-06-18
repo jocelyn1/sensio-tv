@@ -17,4 +17,9 @@ class MovieApi implements MovieApiInterface
     {
         return Movie::createFromApi($this->apiClient->requestById($id));
     }
+
+    public function search(string $term): array
+    {
+        return $this->apiClient->requestBySearch($term);
+    }
 }
