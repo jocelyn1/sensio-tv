@@ -8,10 +8,11 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
- * @ORM\Table(name="users")
+ * @ORM\Table(name="administrators")
  */
-class User implements UserInterface
+class Admin implements UserInterface
 {
+    public const ROLE = 'ROLE_ADMIN';
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -30,13 +31,6 @@ class User implements UserInterface
      * @ORM\Column
      */
     private $password = '';
-
-    /**
-     * @var \DateTimeImmutable|null The hashed password
-     *
-     * @ORM\Column(type="datetime_immutable", nullable=true)
-     */
-    private $birthday;
 
     public function getId(): ?int
     {
@@ -68,7 +62,7 @@ class User implements UserInterface
      */
     public function getRoles(): array
     {
-        return ['ROLE_USER'];
+        return [self::ROLE];
     }
 
     /**
@@ -100,15 +94,5 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
-    }
-
-    public function getBirthday(): ?\DateTimeImmutable
-    {
-        return $this->birthday;
-    }
-
-    public function setBirthday(?\DateTimeImmutable $birthday): void
-    {
-        $this->birthday = $birthday;
     }
 }

@@ -1,6 +1,11 @@
 security:
+    role_hierarchy:
+
     encoders:
         App\Entity\User: auto
+        App\Entity\Admin:
+            algorithm: auto
+
 
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
@@ -9,11 +14,27 @@ security:
             entity:
                 class: App\Entity\User
                 property: email
+        # used to reload user from session & other features (e.g. switch_user)
+#        app_user_provider:
+#            entity:
+#                class: App\Entity\Admin
+#                property: email
 
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|assets)/
             security: false
+
+#        admin:
+#            pattern: ^/admin
+#            anonymous: true
+#            lazy: true
+#            provider: users
+#            guard:
+#                authenticators:
+#                    - App\Security\Guard\AdminFormLoginAuthenticator
+#            logout:
+#                path: app_admin_security_logout
 
         main:
             pattern: ^/
@@ -37,8 +58,8 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+         - { path: ^/admin, roles: ROLE_ADMIN }
+         - { path: ^/profile, roles: !php/const App\Security\Voter\AddMovieToCartVoter::CAN }
         # Prototype
 
 #        -
