@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class MainController extends AbstractController
 {
@@ -27,9 +28,12 @@ class MainController extends AbstractController
     /**
      * @Route("/login", name="app_main_login", methods={"GET"})
      */
-    public function login(): Response
+    public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        return new Response(file_get_contents(__DIR__.'/../../html/login.html'));
+        return $this->render('main/login.html.twig', [
+            'last_email' => $authenticationUtils->getLastUsername(),
+            'last_error' => $authenticationUtils->getLastAuthenticationError(),
+        ]);
     }
 
     /**

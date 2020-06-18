@@ -1,15 +1,32 @@
 security:
+    encoders:
+        App\Entity\User: auto
+
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
-        users_in_memory: { memory: null }
+        # used to reload user from session & other features (e.g. switch_user)
+        users:
+            entity:
+                class: App\Entity\User
+                property: email
+
     firewalls:
         dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            pattern: ^/(_(profiler|wdt)|assets)/
             security: false
+
         main:
+            pattern: ^/
             anonymous: true
             lazy: true
-            provider: users_in_memory
+            provider: users
+            guard:
+                authenticators:
+                    - App\Security\Guard\FormLoginAuthenticator
+            logout:
+                path: app_security_logout
+                # where to redirect after logout
+                # target: app_any_route
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
@@ -22,3 +39,24 @@ security:
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
+        # Prototype
+
+#        -
+#
+##        MATCH REQUEST::
+
+#            # use the urldecoded format
+#            path:                 /admin
+#            host:                 null
+#            port:                 null
+#            ips:                  []
+#            methods:              []
+
+##         AUTH::
+
+#            requires_channel:     null
+#            allow_if:             'request.headers.has("X-TOTO") and request.headers.get("X-TOTO") matches "/^tata$/"'
+#            roles:                ['ROLE_ADMIN', 'ROLE_TOTO', 'ROLE_ALLOW_IF'] # == A
+#
+#            # A = allow_if ou admin ou toto
+#            # B = allow_if and (admin ou toto)
