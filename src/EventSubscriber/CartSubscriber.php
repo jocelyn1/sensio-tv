@@ -26,7 +26,7 @@ class CartSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            CartEvent::class => 'log',
+            CartEvents::ADD_MOVIE => 'log',
         ];
     }
 }
