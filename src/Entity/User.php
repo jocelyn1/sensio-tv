@@ -12,6 +12,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class User implements UserInterface
 {
+    public const ROLE = 'ROLE_USER';
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -32,7 +34,7 @@ class User implements UserInterface
     private $password = '';
 
     /**
-     * @var \DateTimeImmutable|null The hashed password
+     * @var \DateTimeImmutable|null
      *
      * @ORM\Column(type="datetime_immutable", nullable=true)
      */
@@ -68,7 +70,7 @@ class User implements UserInterface
      */
     public function getRoles(): array
     {
-        return ['ROLE_USER'];
+        return [self::ROLE];
     }
 
     /**

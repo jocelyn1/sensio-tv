@@ -1,5 +1,6 @@
 security:
     role_hierarchy:
+        ROLE_ADMIN: ROLE_USER
 
     encoders:
         App\Entity\User: auto
@@ -9,75 +10,46 @@ security:
 
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
-        # used to reload user from session & other features (e.g. switch_user)
-        users:
+        users_provider:
             entity:
                 class: App\Entity\User
                 property: email
-        # used to reload user from session & other features (e.g. switch_user)
-#        app_user_provider:
-#            entity:
-#                class: App\Entity\Admin
-#                property: email
+
+        backend_users_provider:
+            entity:
+                class: App\Entity\Admin
+                property: email
 
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|assets)/
             security: false
 
+        main:
+            pattern: ^/
+            anonymous: true
+            lazy: true
+            provider: users_provider
+#            switch_user: true  # https://symfony.com/doc/current/security/impersonating_user.html
+            guard:
+                authenticators:
+                    - App\Security\Guard\FormLoginAuthenticator
+            logout:
+                path: app_security_logout
+
 #        admin:
 #            pattern: ^/admin
 #            anonymous: true
 #            lazy: true
-#            provider: users
+#            provider: backend_users_provider
 #            guard:
 #                authenticators:
 #                    - App\Security\Guard\AdminFormLoginAuthenticator
 #            logout:
 #                path: app_admin_security_logout
 
-        main:
-            pattern: ^/
-            anonymous: true
-            lazy: true
-            provider: users
-            guard:
-                authenticators:
-                    - App\Security\Guard\FormLoginAuthenticator
-            logout:
-                path: app_security_logout
-                # where to redirect after logout
-                # target: app_any_route
-
-            # activate different ways to authenticate
-            # https://symfony.com/doc/current/security.html#firewalls-authentication
-
-            # https://symfony.com/doc/current/security/impersonating_user.html
-            # switch_user: true
-
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-         - { path: ^/admin, roles: ROLE_ADMIN }
-         - { path: ^/profile, roles: !php/const App\Security\Voter\AddMovieToCartVoter::CAN }
-        # Prototype
-
-#        -
-#
-##        MATCH REQUEST::
-
-#            # use the urldecoded format
-#            path:                 /admin
-#            host:                 null
-#            port:                 null
-#            ips:                  []
-#            methods:              []
-
-##         AUTH::
-
-#            requires_channel:     null
-#            allow_if:             'request.headers.has("X-TOTO") and request.headers.get("X-TOTO") matches "/^tata$/"'
-#            roles:                ['ROLE_ADMIN', 'ROLE_TOTO', 'ROLE_ALLOW_IF'] # == A
-#
-#            # A = allow_if ou admin ou toto
-#            # B = allow_if and (admin ou toto)
+        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/profile, roles: !php/const App\Security\Voter\AddMovieToCartVoter::CAN }
